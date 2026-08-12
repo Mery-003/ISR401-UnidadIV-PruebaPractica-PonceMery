@@ -22,11 +22,15 @@ El trabajo desarrolla el caso **Sistema de Gestión de Pedidos** mediante diez a
 ISR401-UnidadIV-PruebaPractica-PonceMery/
 │
 ├── main.tex
-├── main.pdf
+├── ISR401_UnidadIV_PruebaPractica_PonceMery_Desarrollo.pdf
 ├── README.md
 │
-└── figuras/
-    └── logo_uteq.png
+├── figuras/
+│   └── logo_uteq.png
+│
+└── evidencias/
+    ├── Prueba_Formativa_SGA_UnidadIV_PonceMery.pdf
+    └── captura_evaluacion.png
 ```
 
 ## Contenido del desarrollo
@@ -67,7 +71,7 @@ pdflatex main.tex
 pdflatex main.tex
 ```
 
-El segundo proceso de compilación permite actualizar correctamente referencias internas, numeración y elementos generados por LaTeX.
+El segundo proceso de compilación permite actualizar correctamente la numeración, referencias internas y demás elementos generados por LaTeX.
 
 ## Dependencias
 
@@ -109,25 +113,34 @@ backgrounds
 
 ## Figuras
 
-El archivo:
+La carpeta `figuras` contiene los recursos gráficos utilizados por el documento.
 
-```text
-figuras/logo_uteq.png
-```
-
-corresponde al recurso gráfico institucional utilizado en la portada.
+* `logo_uteq.png`: logotipo institucional utilizado en la portada.
 
 Los diagramas UML de clases, actividades y máquina de estados se generan directamente mediante **TikZ**, por lo que pueden reproducirse al compilar el archivo `main.tex`.
+
+## Evidencias del SGA
+
+La carpeta `evidencias` contiene los archivos complementarios correspondientes a la evaluación formativa realizada en el Sistema de Gestión Académica (SGA).
+
+* `Prueba_Formativa_SGA_UnidadIV_PonceMery.pdf`: evidencia en PDF de la prueba formativa correspondiente a la Unidad IV.
+* `captura_evaluacion.png`: captura correspondiente a la revisión del intento realizado en el SGA.
 
 ## Reproducibilidad
 
 Para reproducir el documento:
 
 1. Clonar o descargar este repositorio.
-2. Verificar que se mantenga la carpeta `figuras`.
+2. Mantener la estructura de carpetas `figuras` y `evidencias`.
 3. Ejecutar `pdflatex main.tex`.
 4. Ejecutar nuevamente `pdflatex main.tex`.
-5. El resultado será el archivo `main.pdf`.
+5. Verificar que el documento se genere correctamente.
+
+El PDF compilado incluido en el repositorio es:
+
+```text
+ISR401_UnidadIV_PruebaPractica_PonceMery_Desarrollo.pdf
+```
 
 ## Repositorio
 
