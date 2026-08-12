@@ -1,0 +1,689 @@
+\documentclass[11pt,a4paper]{article}
+
+% =========================================================
+% PAQUETES
+% =========================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,top=1.8cm,bottom=1.9cm,left=1.9cm,right=1.9cm]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{ragged2e}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{babel,arrows.meta,positioning,shapes.geometric,calc,fit,backgrounds}
+
+% =========================================================
+% COLORES Y ESTILO
+% =========================================================
+\definecolor{uteqgreen}{HTML}{1A7A32}
+\definecolor{uteqgreenlight}{HTML}{EAF5ED}
+\definecolor{uteqblue}{HTML}{17365D}
+\definecolor{uteqbluelight}{HTML}{EDF3F8}
+\definecolor{gold}{HTML}{C79A2B}
+\definecolor{softgray}{HTML}{F4F6F7}
+\definecolor{linegray}{HTML}{D8DEE3}
+\definecolor{danger}{HTML}{A83232}
+\definecolor{dangerlight}{HTML}{FBECEC}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=uteqblue,
+  urlcolor=uteqblue,
+  pdfauthor={Ponce Rivera Mery Helenmey},
+  pdftitle={Prueba Practica Unidad IV - Ingenieria de Requisitos}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{leftmargin=1.5em,itemsep=2pt,topsep=3pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textbf{UTEQ - FCI}}
+\fancyhead[R]{\small Ingeniería de Requisitos (ISR-401)}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\setlength{\headheight}{22pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{uteqgreen}\leaders\hrule height \headrulewidth\hfill}}
+
+\titleformat{\section}
+  {\Large\bfseries\color{uteqblue}}
+  {}{0pt}{}
+\titlespacing*{\section}{0pt}{8pt}{6pt}
+
+\newtcolorbox{taskbox}[2][]{
+  enhanced,
+  breakable,
+  colback=white,
+  colframe=uteqgreen,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=3mm,right=3mm,top=2.5mm,bottom=2.5mm,
+  title={#2},
+  fonttitle=\bfseries\color{white},
+  colbacktitle=uteqgreen,
+  attach boxed title to top left={xshift=0mm,yshift=-1mm},
+  boxed title style={arc=1.5mm,boxrule=0pt},
+  #1
+}
+
+\newtcolorbox{infobox}[1][]{
+  enhanced,
+  breakable,
+  colback=uteqbluelight,
+  colframe=uteqblue,
+  boxrule=0.6pt,
+  arc=2mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,
+  #1
+}
+
+\newtcolorbox{alertbox}[1][]{
+  enhanced,
+  breakable,
+  colback=dangerlight,
+  colframe=danger,
+  boxrule=0.6pt,
+  arc=2mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,
+  #1
+}
+
+\newcommand{\reqid}[1]{\textbf{\color{uteqblue}#1}}
+\newcommand{\ok}{\textcolor{uteqgreen}{\textbf{Sí}}}
+\newcommand{\bad}{\textcolor{danger}{\textbf{No}}}
+
+% TikZ
+\tikzset{
+  umlclass/.style={
+    draw=uteqblue,
+    line width=0.75pt,
+    fill=white,
+    rectangle,
+    text width=4.4cm,
+    minimum height=2.2cm,
+    inner sep=0pt,
+    font=\scriptsize
+  },
+  activity/.style={
+    draw=uteqblue,
+    fill=uteqbluelight,
+    rounded corners=2mm,
+    minimum width=4.0cm,
+    minimum height=0.85cm,
+    align=center,
+    font=\small
+  },
+  decision/.style={
+    diamond,
+    draw=uteqgreen,
+    fill=uteqgreenlight,
+    aspect=2.1,
+    inner sep=1.5pt,
+    align=center,
+    font=\small
+  },
+  state/.style={
+    draw=uteqblue,
+    fill=white,
+    rounded corners=2mm,
+    minimum width=3.2cm,
+    minimum height=0.78cm,
+    align=center,
+    font=\small\bfseries
+  },
+  flow/.style={-{Stealth[length=2.2mm]},line width=0.75pt,draw=uteqblue},
+  assoc/.style={line width=0.75pt,draw=uteqblue}
+}
+
+\begin{document}
+
+% =========================================================
+% PORTADA
+% =========================================================
+\begin{titlepage}
+\thispagestyle{empty}
+\centering
+
+\vspace*{0.5cm}
+{\Large\bfseries\color{uteqblue} UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}\par
+\vspace{0.15cm}
+{\normalsize Facultad de Ciencias de la Ingeniería - Carrera de Ingeniería de Software}\par
+
+\vspace{0.7cm}
+\includegraphics[width=2.5cm]{logo_uteq.png}\par
+\vspace{0.7cm}
+
+{\color{gold}\rule{0.86\textwidth}{1.2pt}}\par
+\vspace{0.45cm}
+{\Huge\bfseries\color{uteqblue} PRUEBA PRÁCTICA - UNIDAD IV}\par
+\vspace{0.25cm}
+{\Large\color{uteqgreen} Sistema de Gestión de Pedidos}\par
+\vspace{0.45cm}
+{\color{gold}\rule{0.86\textwidth}{1.2pt}}\par
+
+\vspace{0.9cm}
+\begin{tcolorbox}[
+  width=0.84\textwidth,
+  colback=softgray,
+  colframe=linegray,
+  boxrule=0.6pt,
+  arc=2mm,
+  left=5mm,right=5mm,top=4mm,bottom=4mm
+]
+\begin{tabularx}{\textwidth}{>{\bfseries\color{uteqblue}}p{3.4cm} X}
+Estudiante: & Ponce Rivera Mery Helenmey \\
+Asignatura: & Ingeniería de Requisitos (ISR-401) \\
+Curso: & 4to ``A'' Software \\
+Docente: & Ing. Guerrero Ulloa Gleiston Ciceron \\
+Fecha: & 11/08/2026 \\
+Repositorio: & \href{https://github.com/Mery-003/ISR401-UnidadIV-PruebaPractica-PonceMery}{github.com/Mery-003/ISR401-UnidadIV-PruebaPractica-PonceMery}
+\end{tabularx}
+\end{tcolorbox}
+
+\vfill
+{\small\color{uteqblue} Validación, gestión, herramientas y estándares de requisitos}\par
+{\small Quevedo - Ecuador, 2026}
+\end{titlepage}
+
+% =========================================================
+% CASO
+% =========================================================
+\begin{infobox}
+\textbf{Caso práctico.} Una tienda en línea requiere un módulo para gestionar los pedidos de sus clientes. Un Cliente, identificado por cédula/RUC, nombre y correo, puede realizar cero o más Pedidos. Cada Pedido posee identificador, fecha y total, contiene una o más Líneas de pedido y cada línea referencia un Producto con código, descripción, precio y stock. Al registrar un pedido, el sistema verifica la disponibilidad de stock: si existe, confirma el pedido; si no, notifica el faltante. Un pedido confirmado puede despacharse, entregarse o anularse mientras no haya sido entregado. El sistema debe registrar pedidos con rapidez y proteger los datos personales del cliente.
+\end{infobox}
+
+% =========================================================
+% P1
+% =========================================================
+\section*{P1. Modelo de datos - Diagrama de clases UML}
+\begin{taskbox}{Diagrama de clases del dominio}
+El modelo conserva la distribución del esquema desarrollado en clase: \textbf{Cliente} a la izquierda, \textbf{Pedido} al centro, \textbf{LíneaPedido} a la derecha y \textbf{Producto} debajo del Pedido. Los identificadores se encuentran marcados como PK.
+
+\begin{center}
+\resizebox{0.98\textwidth}{!}{%
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\node[inner sep=0pt] (cliente) at (0,4.8) {
+\scriptsize
+\begin{tabular}{|l|}
+\hline
+\multicolumn{1}{|c|}{\bfseries\color{uteqblue} CLIENTE} \\
+\hline
+\textbf{PK} cedulaRuc: String \\
+nombre: String \\
+correo: String \\
+\hline
+realizarPedido(): Pedido \\
+\hline
+\end{tabular}
+};
+
+\node[inner sep=0pt] (pedido) at (6.2,4.8) {
+\scriptsize
+\begin{tabular}{|l|}
+\hline
+\multicolumn{1}{|c|}{\bfseries\color{uteqblue} PEDIDO} \\
+\hline
+\textbf{PK} idPedido: Integer \\
+fecha: Date \\
+total: Decimal \\
+estado: String \\
+\hline
+calcularTotal(): Decimal \\
+confirmar(): void \\
+anular(): void \\
+\hline
+\end{tabular}
+};
+
+\node[inner sep=0pt] (linea) at (12.5,4.8) {
+\scriptsize
+\begin{tabular}{|l|}
+\hline
+\multicolumn{1}{|c|}{\bfseries\color{uteqblue} LÍNEAPEDIDO} \\
+\hline
+\textbf{PK} idLinea: Integer \\
+cantidad: Integer \\
+subtotal: Decimal \\
+\hline
+calcularSubtotal(): Decimal \\
+\hline
+\end{tabular}
+};
+
+\node[inner sep=0pt] (producto) at (6.2,-0.7) {
+\scriptsize
+\begin{tabular}{|l|}
+\hline
+\multicolumn{1}{|c|}{\bfseries\color{uteqblue} PRODUCTO} \\
+\hline
+\textbf{PK} codigo: String \\
+descripcion: String \\
+precio: Decimal \\
+stock: Integer \\
+\hline
+verificarStock(cantidad): Boolean \\
+descontarStock(cantidad): void \\
+\hline
+\end{tabular}
+};
+
+% Asociaciones y multiplicidades (misma distribución del esquema manuscrito)
+\draw[assoc] (cliente.east) -- (pedido.west);
+\node[above,font=\scriptsize] at ($(cliente.east)!0.12!(pedido.west)$) {1};
+\node[above,font=\scriptsize] at ($(cliente.east)!0.88!(pedido.west)$) {0..*};
+
+\draw[assoc] (pedido.east) -- (linea.west);
+\node[above,font=\scriptsize] at ($(pedido.east)!0.12!(linea.west)$) {1};
+\node[above,font=\scriptsize] at ($(pedido.east)!0.88!(linea.west)$) {1..*};
+
+\draw[assoc] (producto.east) -- ++(2.7,0) |- (linea.south);
+\node[above,font=\scriptsize] at ($(producto.east)+(0.35,0)$) {1};
+\node[right,font=\scriptsize] at ($(linea.south)+(0,-0.35)$) {0..*};
+
+\end{tikzpicture}%
+}
+\end{center}
+\end{taskbox}
+
+% =========================================================
+% P2
+% =========================================================
+\newpage
+\section*{P2. Modelo funcional - Diagrama de actividades UML}
+\begin{taskbox}{Proceso ``Registrar pedido''}
+\begin{center}
+\resizebox{0.94\textwidth}{!}{%
+\begin{tikzpicture}[node distance=1.0cm and 1.8cm]
+\node[circle,fill=uteqblue,inner sep=4pt] (ini) {};
+\node[activity,below=0.7cm of ini] (datos) {Cliente envía datos del pedido};
+\node[activity,below=0.8cm of datos] (registrar) {Sistema registra pedido};
+\node[activity,below=0.8cm of registrar] (stock) {Sistema verifica stock de cada producto};
+\node[decision,right=2.2cm of stock] (dec) {¿Existe stock\\ suficiente?};
+\node[activity,right=2.5cm of dec] (conf) {Confirmar pedido};
+\node[activity,below=0.8cm of conf] (actual) {Actualizar stock};
+\node[activity,below=1.25cm of dec] (notif) {Notificar faltante};
+\node[activity,below=1.6cm of actual] (merge) {Convergencia};
+\node[circle,draw=uteqblue,line width=0.8pt,minimum size=0.34cm,below=0.7cm of merge] (fin) {};
+\node[circle,fill=uteqblue,minimum size=0.18cm] at (fin.center) {};
+
+\draw[flow] (ini) -- (datos);
+\draw[flow] (datos) -- (registrar);
+\draw[flow] (registrar) -- (stock);
+\draw[flow] (stock) -- (dec);
+\draw[flow] (dec) -- node[above,font=\small\bfseries,color=uteqgreen]{Sí} (conf);
+\draw[flow] (dec) -- node[right,font=\small\bfseries,color=danger]{No} (notif);
+\draw[flow] (conf) -- (actual);
+\draw[flow] (actual) -- (merge);
+\draw[flow] (notif.south) |- (merge.west);
+\draw[flow] (merge) -- (fin);
+\end{tikzpicture}%
+}
+\end{center}
+\end{taskbox}
+
+% =========================================================
+% P3
+% =========================================================
+\section*{P3. Modelo de comportamiento - Máquina de estados UML}
+\begin{taskbox}{Ciclo de vida de un Pedido}
+Se mantiene el flujo vertical del diagrama realizado en clase y se incorpora el estado \textbf{Cancelado} para representar correctamente la transición \textit{anular} mientras el pedido aún no ha sido entregado.
+
+\begin{center}
+\resizebox{0.86\textwidth}{!}{%
+\begin{tikzpicture}[node distance=0.9cm and 2.2cm]
+\node[circle,fill=uteqblue,inner sep=4pt] (ini) {};
+\node[state,below=0.65cm of ini] (reg) {Registrado};
+\node[state,below=0.9cm of reg] (con) {Confirmado};
+\node[state,below=0.9cm of con] (env) {Enviado};
+\node[state,below=0.9cm of env] (ent) {Entregado};
+\node[state,right=4.7cm of con,draw=danger,fill=dangerlight] (can) {Cancelado};
+\node[circle,draw=uteqblue,line width=0.8pt,minimum size=0.34cm,below=0.65cm of ent] (fin1) {};
+\node[circle,fill=uteqblue,minimum size=0.18cm] at (fin1.center) {};
+\node[circle,draw=danger,line width=0.8pt,minimum size=0.34cm,below=0.65cm of can] (fin2) {};
+\node[circle,fill=danger,minimum size=0.18cm] at (fin2.center) {};
+
+\draw[flow] (ini) -- node[right,font=\small]{registrarPedido} (reg);
+\draw[flow] (reg) -- node[right,font=\small]{confirmar [stock suficiente]} (con);
+\draw[flow] (con) -- node[right,font=\small]{despachar} (env);
+\draw[flow] (env) -- node[right,font=\small]{entregar} (ent);
+\draw[flow] (ent) -- (fin1);
+
+\draw[-{Stealth[length=2.2mm]},line width=0.75pt,draw=danger] (reg.east) -| node[pos=0.25,above,font=\small,color=danger]{anular [no entregado]} (can.north);
+\draw[-{Stealth[length=2.2mm]},line width=0.75pt,draw=danger] (con.east) -- node[above,font=\small,color=danger]{anular [no entregado]} (can.west);
+\draw[-{Stealth[length=2.2mm]},line width=0.75pt,draw=danger] (env.east) -| node[pos=0.3,below,font=\small,color=danger]{anular [no entregado]} (can.south);
+\draw[-{Stealth[length=2.2mm]},line width=0.75pt,draw=danger] (can) -- (fin2);
+\end{tikzpicture}%
+}
+\end{center}
+\end{taskbox}
+
+% =========================================================
+% P4
+% =========================================================
+\section*{P4. Consistencia entre las tres perspectivas}
+\begin{taskbox}{Tabla de verificación cruzada}
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries}p{2.8cm} X X}
+\toprule
+\textcolor{uteqblue}{Evento P3} & \textcolor{uteqblue}{Acción / función P2} & \textcolor{uteqblue}{Elemento P1 modificado} \\
+\midrule
+registrarPedido & Registrar pedido & Pedido, LíneaPedido \\
+verificarStock & Verificar stock & Producto.stock \\
+confirmar & Confirmar pedido & Pedido.estado \\
+despachar & Despachar pedido & Pedido.estado \\
+entregar & Entregar pedido & Pedido.estado \\
+anular & Anular pedido & Pedido.estado \\
+\bottomrule
+\end{tabularx}
+\normalsize
+\end{taskbox}
+
+% =========================================================
+% P5
+% =========================================================
+\section*{P5. Especificación de requisitos con esquema de atributos}
+
+% --- Cuatro fichas como en el desarrollo manuscrito: 2 arriba y 2 abajo ---
+\begin{minipage}[t]{0.48\textwidth}
+\begin{tcolorbox}[
+  enhanced,
+  colback=white,
+  colframe=uteqgreen,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=2.5mm,right=2.5mm,top=2.5mm,bottom=2.5mm,
+  title={RF-01 - Registrar pedido},
+  fonttitle=\small\bfseries\color{white},
+  colbacktitle=uteqgreen,
+  attach boxed title to top left={xshift=0mm,yshift=-1mm},
+  boxed title style={arc=1.5mm,boxrule=0pt}
+]
+\small
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\linewidth}{>{\bfseries\RaggedRight\arraybackslash}p{2.25cm} X}
+ID & RF-01 \\
+Prioridad & Alta \\
+Estado & Propuesto \\
+Fuente & Tienda / Cliente \\
+Estabilidad & Alta \\
+Versión & 1.0 \\
+Verificación & Prueba funcional \\
+\end{tabularx}
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\begin{tcolorbox}[
+  enhanced,
+  colback=white,
+  colframe=uteqgreen,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=2.5mm,right=2.5mm,top=2.5mm,bottom=2.5mm,
+  title={RF-02 - Verificar disponibilidad},
+  fonttitle=\small\bfseries\color{white},
+  colbacktitle=uteqgreen,
+  attach boxed title to top left={xshift=0mm,yshift=-1mm},
+  boxed title style={arc=1.5mm,boxrule=0pt}
+]
+\small
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\linewidth}{>{\bfseries\RaggedRight\arraybackslash}p{2.25cm} X}
+ID & RF-02 \\
+Prioridad & Alta \\
+Estado & Propuesto \\
+Fuente & Tienda \\
+Estabilidad & Alta \\
+Versión & 1.0 \\
+Verificación & Prueba funcional \\
+\end{tabularx}
+\end{tcolorbox}
+\end{minipage}
+
+\vspace{0.30cm}
+
+\begin{minipage}[t]{0.48\textwidth}
+\begin{tcolorbox}[
+  enhanced,
+  colback=white,
+  colframe=uteqgreen,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=2.5mm,right=2.5mm,top=2.5mm,bottom=2.5mm,
+  title={RNF-01 - Eficiencia de desempeño},
+  fonttitle=\small\bfseries\color{white},
+  colbacktitle=uteqgreen,
+  attach boxed title to top left={xshift=0mm,yshift=-1mm},
+  boxed title style={arc=1.5mm,boxrule=0pt}
+]
+\small
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\linewidth}{>{\bfseries\RaggedRight\arraybackslash}p{2.25cm} X}
+ID & RNF-01 \\
+Prioridad & Media \\
+Estado & Propuesto \\
+Fuente & Tienda \\
+Estabilidad & Media \\
+Versión & 1.0 \\
+Verificación & Prueba de rendimiento \\
+\end{tabularx}
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\begin{tcolorbox}[
+  enhanced,
+  colback=white,
+  colframe=uteqgreen,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=2.5mm,right=2.5mm,top=2.5mm,bottom=2.5mm,
+  title={RNF-02 - Seguridad},
+  fonttitle=\small\bfseries\color{white},
+  colbacktitle=uteqgreen,
+  attach boxed title to top left={xshift=0mm,yshift=-1mm},
+  boxed title style={arc=1.5mm,boxrule=0pt}
+]
+\small
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\linewidth}{>{\bfseries\RaggedRight\arraybackslash}p{2.25cm} X}
+ID & RNF-02 \\
+Prioridad & Alta \\
+Estado & Propuesto \\
+Fuente & Tienda \\
+Estabilidad & Alta \\
+Versión & 1.0 \\
+Verificación & Prueba de seguridad \\
+\end{tabularx}
+\end{tcolorbox}
+\end{minipage}
+
+\vspace{0.45cm}
+
+\begin{taskbox}{Enunciados de los requisitos}
+\textbf{RF-01 - Registrar pedido.} El sistema deberá registrar el pedido con los datos correspondientes.
+
+\textbf{RF-02 - Verificar disponibilidad.} Cuando se solicite confirmar un pedido, el sistema deberá verificar el stock de todas las líneas; si existe disponibilidad deberá confirmar el pedido y, si existe un faltante, deberá notificarlo.
+
+\textbf{RNF-01 - Eficiencia de desempeño.} \textbf{Característica ISO/IEC 25010:2023:} Eficiencia de desempeño. El 95\% de los registros de pedidos deberá completarse en menos de 3 segundos.
+
+\textbf{RNF-02 - Seguridad.} \textbf{Característica ISO/IEC 25010:2023:} Seguridad. El sistema deberá proteger los datos personales del cliente, rechazando el 100\% de los intentos de acceso no autorizado.
+\end{taskbox}
+
+% =========================================================
+% P6
+% =========================================================
+\section*{P6. Priorización MoSCoW}
+\begin{taskbox}{Clasificación de los requisitos}
+\small
+\renewcommand{\arraystretch}{1.40}
+\begin{tabularx}{\textwidth}{
+  >{\centering\arraybackslash\bfseries}m{2.1cm}
+  >{\centering\arraybackslash}m{2.8cm}
+  >{\RaggedRight\arraybackslash}X
+}
+\toprule
+\textbf{\textcolor{uteqblue}{Requisito}} &
+\textbf{\textcolor{uteqblue}{MoSCoW}} &
+\textbf{\textcolor{uteqblue}{Justificación}} \\
+\midrule
+RF-01 & \textcolor{uteqgreen}{\textbf{Must Have}} & Registrar pedidos es la función principal del módulo. \\
+RF-02 & \textcolor{uteqgreen}{\textbf{Must Have}} & Evita confirmar pedidos sin existencias disponibles. \\
+RNF-01 & \textcolor{uteqgreen}{\textbf{Should Have}} & La rapidez mejora el servicio, aunque el registro puede funcionar superando ligeramente el límite. \\
+RNF-02 & \textcolor{uteqgreen}{\textbf{Must Have}} & Los datos personales del cliente deben estar protegidos. \\
+\bottomrule
+\end{tabularx}
+\normalsize
+\end{taskbox}
+
+% =========================================================
+% P7
+% =========================================================
+\section*{P7. Validación por inspección - Lista de comprobación 29148}
+\begin{taskbox}{Paso 1 - Registro de defectos}
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries}p{1.6cm} *{5}{>{\centering\arraybackslash}X}}
+\toprule
+\textcolor{uteqblue}{Req.} & \textcolor{uteqblue}{No ambiguo} & \textcolor{uteqblue}{Completo} & \textcolor{uteqblue}{Singular} & \textcolor{uteqblue}{Verificable} & \textcolor{uteqblue}{Factible} \\
+\midrule
+RF-01 & \bad & \bad & \ok & \bad & \ok \\
+RF-02 & \ok & \ok & \ok & \ok & \ok \\
+RNF-01 & \ok & \ok & \ok & \ok & \ok \\
+RNF-02 & \bad & \ok & \ok & \ok & \ok \\
+\bottomrule
+\end{tabularx}
+\normalsize
+
+\end{taskbox}
+
+\begin{taskbox}{Paso 2 - Retrabajo}
+\textbf{RF-01 corregido.} Cuando el cliente envíe una solicitud válida, el sistema deberá crear un Pedido con identificador, fecha, total, cliente asociado y una o más líneas de pedido.
+
+\textbf{RNF-02 corregido.} El sistema deberá impedir el acceso no autorizado a la cédula/RUC, nombre y correo del cliente, rechazando el 100\% de los intentos realizados por usuarios sin autorización.
+\end{taskbox}
+
+% =========================================================
+% P8
+% =========================================================
+\section*{P8. Pruebas de aceptación trazadas}
+\begin{taskbox}{Pruebas CP-01 a CP-04}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{1.5cm} >{\bfseries}p{1.6cm} p{2.1cm} X X}
+\toprule
+\textcolor{uteqblue}{Prueba} & \textcolor{uteqblue}{Req.} & \textcolor{uteqblue}{Tipo} & \textcolor{uteqblue}{Entrada} & \textcolor{uteqblue}{Criterio de éxito} \\
+\midrule
+CP-01 & RF-01 & Funcional & Cliente válido + productos & Se crea un Pedido con ID, fecha, total, cliente y líneas. \\
+CP-02 & RF-02 & Funcional & Producto con stock insuficiente & El pedido no se confirma y se notifica el faltante. \\
+CP-03 & RNF-01 & No funcional & Conjunto de solicitudes de pedidos & Al menos el 95\% se procesa en menos de 3 segundos. \\
+CP-04 & RNF-02 & No funcional & Acceso sin autorización a datos del cliente & El 100\% de los accesos no autorizados son rechazados. \\
+\bottomrule
+\end{tabularx}
+\normalsize
+\end{taskbox}
+
+% =========================================================
+% P9
+% =========================================================
+\newpage
+\section*{P9. Matriz de trazabilidad}
+\begin{taskbox}{RTM - Trazabilidad hacia atrás, hacia adelante y horizontal}
+\scriptsize
+\begin{tabularx}{\textwidth}{>{\bfseries}p{1.5cm} p{2.1cm} X >{\bfseries}p{1.5cm} X}
+\toprule
+\textcolor{uteqblue}{Req.} & \textcolor{uteqblue}{Fuente} & \textcolor{uteqblue}{Modelo asociado} & \textcolor{uteqblue}{Prueba} & \textcolor{uteqblue}{Dependencia} \\
+\midrule
+RF-01 & Cliente / Tienda & P1 Pedido-LíneaPedido + P2 Registrar & CP-01 & -- \\
+RF-02 & Tienda & P1 Producto.stock + P2 Verificar + P3 Confirmar & CP-02 & Depende de RF-01 \\
+RNF-01 & Tienda & P2 Registrar pedido & CP-03 & Restringe RF-01 \\
+RNF-02 & Tienda & P1 Cliente & CP-04 & Restringe RF-01 \\
+\bottomrule
+\end{tabularx}
+\normalsize
+
+\begin{itemize}
+  \item \textbf{Traza hacia atrás:} requisito $\rightarrow$ fuente.
+  \item \textbf{Traza hacia adelante:} requisito $\rightarrow$ modelo $\rightarrow$ prueba.
+  \item \textbf{Traza horizontal:} RF-02 depende de RF-01; RNF-01 y RNF-02 restringen RF-01.
+  \item \textbf{Requisitos huérfanos:} ninguno; los cuatro requisitos poseen fuente, modelo asociado y prueba de aceptación.
+\end{itemize}
+\end{taskbox}
+
+% =========================================================
+% P10
+% =========================================================
+
+\section*{P10. Gestión del cambio y línea base}
+
+\begin{taskbox}{Solicitud de Cambio CR-01}
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{
+  >{\bfseries\color{uteqblue}\RaggedRight\arraybackslash}m{3.2cm}
+  >{\RaggedRight\arraybackslash}X
+}
+Solicitud &
+Modificar RNF-01 para reducir el tiempo requerido de registro de 3 segundos a 2 segundos. \\
+\midrule
+Impacto &
+Afecta RNF-01, el proceso ``Registrar pedido'' de P2, la prueba CP-03 y la matriz P9. P1 y P3 no requieren modificación estructural. \\
+\midrule
+Decisión CCB &
+\textbf{Aprobada}, después de comprobar su viabilidad. \\
+\midrule
+Versión &
+RNF-01 cambia de v1.0 a v1.1. \\
+\midrule
+Actualización &
+CP-03 debe comprobar que el 95\% de los registros se complete en menos de 2 segundos. \\
+\end{tabularx}
+\normalsize
+\end{taskbox}
+
+\begin{taskbox}{Línea base (Baseline) BL-1.1}
+
+
+\vspace{0.2cm}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.30}
+\begin{tabular}{
+  >{\bfseries\color{uteqblue}\RaggedRight\arraybackslash}m{9.2cm}
+  >{\centering\arraybackslash}m{2.2cm}
+}
+\toprule
+\textcolor{uteqblue}{Artefacto} & \textcolor{uteqblue}{Versión} \\
+\midrule
+ERS & v1.1 \\
+Diagrama de clases & v1.1 \\
+Diagrama de actividades & v1.1 \\
+Máquina de estados & v1.1 \\
+Matriz de trazabilidad (RTM) & v1.1 \\
+Pruebas de aceptación & v1.1 \\
+\bottomrule
+\end{tabular}
+\normalsize
+\end{center}
+\end{taskbox}
+
+\vfill
+\begin{center}
+{\color{gold}\rule{0.7\textwidth}{0.8pt}}\\[2mm]
+{\small\color{uteqblue} Fin del desarrollo práctico - Unidad IV}
+\end{center}
+
+\end{document}
